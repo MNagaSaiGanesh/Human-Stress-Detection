@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File System Simulation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>File System Simulation</h1>
+
+        <!-- Display Current Path -->
+        <h4>Current Path: {{ current_path }}</h4>
+
+        <!-- List Files and Directories -->
+        <h5>Contents of the Current Directory:</h5>
+        <ul class="list-group">
+            {% for file, is_dir in files %}
+                <li class="list-group-item">
+                    {{ "[DIR]" if is_dir else "[FILE]" }} {{ file }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Navigation Form -->
+        <form action="{{ url_for('cd') }}" method="POST" class="mt-3">
+            <div class="input-group">
+                <input type="text" name="dir_name" class="form-control" placeholder="Enter directory name (.. to go up)">
+                <button class="btn btn-primary" type="submit">Change Directory</button>
+            </div>
+        </form>
+
+        <!-- Create New File/Directory Form -->
+        <form action="{{ url_for('create') }}" method="POST" class="mt-3">
+            <div class="input-group">
+                <input type="text" name="name" class="form-control" placeholder="Enter name">
+                <div class="input-group-text">
+                    <input type="checkbox" name="is_directory"> Directory
+                </div>
+                <button class="btn btn-success" type="submit">Create</button>
+            </div>
+        </form>
+
+        <!-- Delete File/Directory Form -->
+        <form action="{{ url_for('delete') }}" method="POST" class="mt-3">
+            <div class="input-group">
+                <input type="text" name="name" class="form-control" placeholder="Enter name to delete">
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </div>
+        </form>
+
+        <!-- Display Tree Structure -->
+        <h5 class="mt-4">File System Tree Structure:</h5>
+        <pre>
+{{ tree | join('\n') }}
+        </pre>
+    </div>
+</body>
+</html>
